@@ -4,16 +4,17 @@ I just wanted to learn Python and thought cloning [semicolon](https://github.com
 
 ## Examples
 Prompt 2 numbers, add and print result  
+
 	⁏ ⁏⁏⁏ ⁏⁏⁏;;⁏ ;⁏  ;
 
 See more in [examples](https://github.com/buunguyen/semicolon/tree/master/examples)	
 
 ## Usage
-python semicolon.py [sc file]
+	python semicolon.py [sc file]
 
 ## Hate it? 
 No doubt, it's just for fun. Check out a more [serious language](https://github.com/buunguyen/Bike) I built
 
 ## Contact
-Email: [buunguyen@gmail.com](mailto:buunguyen@gmail.com)
+Email: [buunguyen@gmail.com](mailto:buunguyen@gmail.com)  
 Twitter: [@buunguyen](http://twitter.com/buunguyen)
