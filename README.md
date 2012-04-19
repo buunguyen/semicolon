@@ -22,13 +22,14 @@ Hello world
 Prompt 2 numbers, add and print result  
 
 	⁏ ⁏⁏⁏ ⁏⁏⁏;;⁏ ;⁏  ;
-	
+
 Call  
 	 ;⁏;;;⁏⁏;;⁏;⁏
 	  ; ;;;;;⁏⁏;;⁏;⁏
 	;;;;⁏;;⁏;;;
 	⁏ ;; ;
-	
+
+
 See more in [examples](https://github.com/buunguyen/semicolon/tree/master/examples)	
 
 ## Usage
