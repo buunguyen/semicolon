@@ -29,7 +29,7 @@ See more in [examples](https://github.com/buunguyen/semicolon/tree/master/exampl
 	python semicolon.py [sc file]
 
 ## Hate it? 
-No doubt, it's just for fun. Check out a more [serious language](https://github.com/buunguyen/Bike) I built.
+No doubt, it's just for fun. Check out a more [serious language](http://buunguyen.github.com/Bike/) I built.
 
 ## Contact
 Email: [buunguyen@gmail.com](mailto:buunguyen@gmail.com)  
