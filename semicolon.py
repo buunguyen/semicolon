@@ -1,40 +1,34 @@
 # coding: utf-8
 
-########### Tokenization
+#-------- Tokenization
 def tokenize(code):
+	import re
 	ops = {
-	  ';;;': { 'code': 'push', 'arg': 'signed'},
-	  ';;⁏': { 'code': 'dup' },
-	  ';⁏;': { 'code': 'swap' },
-	  ';⁏⁏': { 'code': 'discard' },
-	  '⁏;;': { 'code': 'add' },
-	  '⁏;⁏': { 'code': 'sub' },
-	  '⁏⁏;': { 'code': 'mul' },
-	  '⁏⁏⁏': { 'code': 'div' },
-	  '⁏  ': { 'code': 'mod' },
-	  '; ;': { 'code': 'store' },
-	  '; ⁏': { 'code': 'retrieve' },
-	  ' ;;': { 'code': 'label', 'arg': 'unsigned' },
-	  ' ;⁏': { 'code': 'call', 'arg': 'unsigned' },
-	  ' ; ': { 'code': 'ret' },
-	  ' ⁏ ': { 'code': 'jump', 'arg': 'unsigned' },
-	  ' ⁏;': { 'code': 'jz', 'arg': 'unsigned' },
-	  ' ⁏⁏': { 'code': 'jn', 'arg': 'unsigned' },
-	  '  ;': { 'code': 'exit' },
+	  ';;;':  { 'code': 'push', 'arg': 'signed'},
+	  ';;⁏':  { 'code': 'dup' },
+	  ';⁏;':  { 'code': 'swap' },
+	  ';⁏⁏':  { 'code': 'discard' },
+	  '⁏;;':  { 'code': 'add' },
+	  '⁏;⁏':  { 'code': 'sub' },
+	  '⁏⁏;':  { 'code': 'mul' },
+	  '⁏⁏⁏':  { 'code': 'div' },
+	  '⁏  ':  { 'code': 'mod' },
+	  '; ;':  { 'code': 'store' },
+	  '; ⁏':  { 'code': 'retrieve' },
+	  ' ;;':  { 'code': 'label', 'arg': 'unsigned' },
+	  ' ;⁏':  { 'code': 'call', 'arg': 'unsigned' },
+	  ' ; ':  { 'code': 'ret' },
+	  ' ⁏ ':  { 'code': 'jump', 'arg': 'unsigned' },
+	  ' ⁏;':  { 'code': 'jz', 'arg': 'unsigned' },
+	  ' ⁏⁏':  { 'code': 'jn', 'arg': 'unsigned' },
+	  '  ;':  { 'code': 'exit' },
 	  '⁏ ;;': { 'code': 'outchar' },
 	  '⁏ ;⁏': { 'code': 'outnum' },
 	  '⁏ ⁏;': { 'code': 'readchar' },
 	  '⁏ ⁏⁏': { 'code': 'readnum' },
-	};
+	}
 	
-	def make_int(str):
-		ret = '';
-	  	for c in str:
-			ret += '0' if c == ';' else '1'
-	  	return int(ret, 2);
-
-	import re
-	tokens = []
+	make_int = lambda str:int(''.join('0' if c == ';' else '1' for c in str), 2)
 	while code and code != '\n':
 		has_match = False
 		for key in ops:
@@ -54,25 +48,9 @@ def tokenize(code):
 				else:
 					tokens.append([ops[key]['code']])
 		if not has_match:
-			raise Exception('Unknown command')	
-	return tokens
+			raise Exception('Unknown command')
 
-########### Interpretation
-import sys
-	
-tokens = []
-heap = {}
-stack = []
-pc = 0
-call_stack = []
-bin_ops = {
-	'add': '+',
-	'sub': '-',
-	'mul': '*',
-	'div': '/',
-	'mod': '%'
-}
-
+#-------- Interpretation
 def jump(label):
 	global pc
 	for i in range(len(tokens)):
@@ -82,7 +60,7 @@ def jump(label):
 	step()
 
 def step():	
-	global tokens, heap, stack, pc, call_stack
+	global pc
 	op = tokens[pc][0]
 	arg = None if len(tokens[pc]) == 1 else tokens[pc][1]
 	pc += 1
@@ -99,12 +77,12 @@ def step():
 		stack.pop()
 		step()
 	elif op == 'add' or op == 'sub' or op == 'mul' or op == 'div' or op == 'mod':
+		bin_ops = { 'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%' }
 		stack.append(eval(str(stack.pop()) + bin_ops[op] + str(stack.pop())))
 		step()
 	elif op == 'store':
 		heap[stack[-2]] = stack[-1]
-		stack.pop()
-		stack.pop()
+		stack.pop(); stack.pop()
 		step()
 	elif op == 'retrieve':
 		stack.append(heap[stack.pop()])
@@ -140,7 +118,12 @@ def step():
 	else:
 		raise Exception('Unknow opcode')
 		
-code = open(sys.argv[1], 'r').read().decode('utf8')
-tokens = tokenize(code)
-print tokens
-step()
+#-------- Main
+import sys
+if len(sys.argv) == 2:
+	tokens = []; pc = 0; heap = {}; stack = []; call_stack = []
+	code = open(sys.argv[1], 'r').read().decode('utf8')
+	tokenize(code)
+	print tokens
+	step()
+else: print 'Usage: python semicolon.py [file.sc]'
