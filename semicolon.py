@@ -116,7 +116,7 @@ def step():
 		stack.append(int(sys.stdin.readline()))
 		step()
 	else:
-		raise Exception('Unknow opcode')
+		raise Exception('Unknown opcode')
 		
 #-------- Main
 import sys
