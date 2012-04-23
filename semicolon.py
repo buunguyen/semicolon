@@ -102,7 +102,7 @@ def step():
 	elif op == 'readnum':
 		stack.append(int(sys.stdin.readline()))
 		step()
-	else: raise Exception('Unknow opcode')
+	else: raise Exception('Unknown opcode')
 
 def jump(label):
 	global pc
@@ -111,7 +111,7 @@ def jump(label):
 			pc = index
 			break
 	step()
-			
+		
 import sys
 if len(sys.argv) == 2:
 	tokens = []; pc = 0; heap = {}; stack = []; call_stack = []
