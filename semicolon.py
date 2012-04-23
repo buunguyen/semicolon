@@ -1,6 +1,5 @@
 # coding: utf-8
 
-#-------- Tokenization
 def tokenize(code):
 	import re
 	ops = {
@@ -32,32 +31,20 @@ def tokenize(code):
 	while code and code != '\n':
 		has_match = False
 		for key in ops:
-			pattern = (key + (r'([;⁏]*)\n' if 'arg' in ops[key] else r'()') + r'(.*)$').decode('utf8')
+			pattern = (key + (r'([;⁏]*)\n' if 'arg' in ops[key] else '()') + r'(.*)$').decode('utf8')
 			match = re.match(pattern, code, re.S)
 			if match:
 				has_match = True
 				code = match.group(2)
 				if 'arg' in ops[key]:
 					if ops[key]['arg'] == 'unsigned':
-						tokens.append([ops[key]['code'], 
-									   make_int(match.group(1))])
+						tokens.append([ops[key]['code'], make_int(match.group(1))])
 					elif ops[key]['arg'] == 'signed':
-						tokens.append([ops[key]['code'],
-									   (1 if match.group(1)[0] == ';' else -1) * 
-										make_int(match.group(1)[1:])])
-				else:
-					tokens.append([ops[key]['code']])
-		if not has_match:
+						tokens.append([ops[key]['code'], 
+									   (1 if match.group(1)[0] == ';' else -1) * make_int(match.group(1)[1:])])
+				else: tokens.append([ops[key]['code']])
+		if not has_match: 
 			raise Exception('Unknown command')
-
-#-------- Interpretation
-def jump(label):
-	global pc
-	for i in range(len(tokens)):
-		if tokens[i][0] == 'label' and tokens[i][1] == label:
-			pc = i
-			break
-	step()
 
 def step():	
 	global pc
@@ -115,15 +102,19 @@ def step():
 	elif op == 'readnum':
 		stack.append(int(sys.stdin.readline()))
 		step()
-	else:
-		raise Exception('Unknow opcode')
-		
-#-------- Main
+	else: raise Exception('Unknow opcode')
+
+def jump(label):
+	global pc
+	for index, token in enumerate(tokens):
+		if token[0] == 'label' and token[1] == label:
+			pc = index
+			break
+	step()
+			
 import sys
 if len(sys.argv) == 2:
 	tokens = []; pc = 0; heap = {}; stack = []; call_stack = []
-	code = open(sys.argv[1], 'r').read().decode('utf8')
-	tokenize(code)
-	print tokens
+	tokenize(open(sys.argv[1], 'r').read().decode('utf8'))
 	step()
 else: print 'Usage: python semicolon.py [file.sc]'
