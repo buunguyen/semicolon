@@ -33,5 +33,5 @@ No doubt, it's just for fun. Check out a more [serious language](http://buunguye
 
 ## Contact
 Email: [buunguyen@gmail.com](mailto:buunguyen@gmail.com)  
-Blog: [www.buunguyen.net](http://www.buunguyen.net/blog) 
+Blog: [www.buunguyen.net](http://www.buunguyen.net/blog)  
 Twitter: [@buunguyen](http://twitter.com/buunguyen)
